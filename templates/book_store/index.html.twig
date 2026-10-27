@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Книжный магазин — отчёты{% endblock %}
+
+{% block body %}
+<div style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: sans-serif;">
+    <h1>📚 Книжный магазин</h1>
+
+    <h2>1. Люди и количество заказов</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr><th>Имя</th><th>Email</th><th>Заказов</th></tr>
+        {% for item in customers %}
+        <tr>
+            <td>{{ item.customer.name }}</td>
+            <td>{{ item.customer.email }}</td>
+            <td>{{ item.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>2. Заказы с суммой</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr><th>ID заказа</th><th>Клиент</th><th>Сумма</th></tr>
+        {% for item in orders %}
+        <tr>
+            <td>{{ item.order.id }}</td>
+            <td>{{ item.order.customer.name }}</td>
+            <td>{{ item.total|number_format(2, ',', ' ') }} ₽</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>3. Топ-3 клиента</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr><th>Имя</th><th>Всего потрачено</th></tr>
+        {% for row in topClients %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.totalSpent|number_format(2, ',', ' ') }} ₽</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>4. Средняя сумма покупки</h2>
+    <p><strong>{{ average|number_format(2, ',', ' ') }} ₽</strong></p>
+
+    <h2>5. Самая дорогая книга</h2>
+    {% if mostExpensive %}
+    <p><strong>{{ mostExpensive.title }}</strong> — {{ mostExpensive.price|number_format(2, ',', ' ') }} ₽</p>
+    {% else %}
+    <p>Нет данных</p>
+    {% endif %}
+</div>
+{% endblock %}
